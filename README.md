@@ -1,31 +1,42 @@
+✨ Next-Gen Enterprise Automation Framework (BDD | UI | API | Scalable)
+<p align="center"> <img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="Status Badge"> <img src="https://img.shields.io/badge/Built%20With-Selenium%20%7C%20Cucumber%20%7C%20TestNG-blue" alt="Tech Stack Badge"> <img src="https://img.shields.io/badge/Testing-UI%20%7C%20API%20%7C%20Mobile%20%7C%20ETL-orange" alt="Testing Scope Badge"> <img src="https://img.shields.io/badge/Author-Revanth-lightgrey" alt="Author Badge"> </p>
+
+🚀 Overview: The Unified Automation Solution
+This project introduces a Next-Generation, enterprise-grade automation framework built on a robust foundation of Selenium, Cucumber (BDD), TestNG, and Maven.
+
+It is engineered to be a single, unified test suite capable of supporting diverse testing needs:
+
+🖥️ UI Automation
+
+🌐 API Testing (Extensible to Rest Assured)
+
+📱 Mobile Testing (Extensible to Appium)
+
+🗃️ ETL / Data Testing
+
+Built with enterprise automation best practices, it focuses intensely on scalability, maintainability, and reliable parallel execution.
+
+⭐ Key Architectural Features
+Our design adheres to clean architecture principles and focuses on eliminating common pitfalls in large-scale test automation.
+
+BDD & Collaboration:
+
+Behavior-Driven Development (BDD) using Cucumber & Gherkin ensures test cases are readable and serve as living documentation, fostering collaboration between technical and non-technical stakeholders.
+
+Reliable Parallel Execution:
+
+Thread-Safe DriverManager with WebDriverManager integration guarantees isolated driver instances for flawless parallel runs without static state contamination.
+
+Scenario-Level Dependency Injection (PicoContainer) for safe data sharing across steps via dedicated ScenarioContext and TestContext.
+
+Configurable & Extensible:
+
+Config-Driven Execution Model: Easily switch between browsers, environments, and execution modes via centralized configuration.
+
+Framework Initializer: Centralized point for configuration loading, sophisticated logging, and environment setup.
+
+Enterprise Standards:
+
+Designed as a foundational template, offering a highly extensible architecture that aligns with real-world enterprise automation standards.
+
 Author: Revanth
-A Next-Gen BDD automation framework built with Selenium, Cucumber, TestNG, and Maven, designed for scalable UI, API, ETL, and Mobile testing. 
-Features include config-driven execution, thread-safe driver management, scenario-level dependency injection, and a clean, extensible architecture aligned with enterprise automation standards. 
-Built with enterprise automation best practices, focusing on scalability, maintainability, and parallel execution.
-
-Detailed Overview
-Title: Next-Gen Enterprise Automation Framework (BDD-Driven | UI | API | Scalable)
-
-Description:
-
-  * This project is a Next-Generation, enterprise-grade automation framework built using Selenium, Cucumber (BDD), TestNG, and Maven, designed to support UI, API, ETL, and Mobile automation within a single unified test suite.
-
-  * The framework follows clean architecture principles and uses Behavior-Driven Development (BDD) to ensure readability, reusability, and collaboration between technical and non-technical stakeholders.
-
-  * It implements a config-driven execution model, thread-safe WebDriver management, and scenario-level dependency injection using PicoContainer, enabling reliable parallel execution without static state issues.
-
-Key features include:
-
-  * BDD-based test design using Cucumber & Gherkin
-
-  * Thread-safe DriverManager with WebDriverManager integration
-
-  * ScenarioContext & TestContext for safe data sharing across steps
-
-  * FrameworkInitializer for centralized configuration, logging, and setup
-
-  * Configurable browser and environment support
-
-  * Scalable structure to extend API (Rest Assured), ETL, and Mobile (Appium) automation
-
-This framework is designed with real-world enterprise automation standards in mind and serves as a foundation for building robust, maintainable, and scalable test automation solutions.
