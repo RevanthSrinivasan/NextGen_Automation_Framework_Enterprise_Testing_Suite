@@ -1,65 +1,80 @@
 package core;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import utils.ConfigReader;
+import com.fasterxml.jackson.databind.JsonNode;
+import utils.*;
 
-import java.util.Properties;
-import java.util.Scanner;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 public class FrameworkInitializer {
 
-    public static Properties properties;
-
-    // Initialize the framework
-    public static void initFramework() {
+    public static void initFramework() throws IOException {
         System.out.println("Initializing Framework...");
 
-        // Load configuration properties
-        try {
-            properties = ConfigReader.loadProperties();
-            System.out.println("Config loaded: " + properties);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load configuration");
+        // Load Config
+        ConfigReader.loadProperties();
+        System.out.println("Config loaded: browser=" + ConfigReader.get("browser"));
+
+        // Load setuplist.json
+        SetupListReader.init("src/test/resources/setuplist.json");
+        System.out.println("SetupList loaded");
+
+        // Load runnermap.json
+        RunnerMapReader.init("src/test/resources/runnermap.json");
+        System.out.println("Runnermap loaded");
+
+        DatalistReader.init("src/test/resources/datalist.json");
+        System.out.println("Datalist loaded");
+        // List of all possible assets
+        String[] assets = {"ui", "api", "mobile", "etl", "reporting", "logging"};
+
+        for (String assetName : assets) {
+            try {
+                // Only initialize if module enabled in runnermap.json
+                if (!RunnerMapReader.isModuleEnabled(assetName)) {
+                    System.out.println("Skipping asset: " + assetName + " (disabled in runnermap.json)");
+                    continue;
+                }
+
+                JsonNode assetNode = SetupListReader.getAsset(assetName);
+                if (assetNode.isMissingNode()) {
+                    System.out.println("Asset not defined in setuplist.json: " + assetName);
+                    continue;
+                }
+
+                String className = assetNode.get("class").asText();
+                String methodName = assetNode.get("initMethod").asText();
+
+                Class<?> clazz = Class.forName(className);
+                Method method = clazz.getMethod(methodName);
+                method.invoke(null); // static init
+
+                System.out.println("Initialized asset: " + assetName);
+
+            } catch (Exception e) {
+                System.out.println("Failed to initialize asset: " + assetName);
+                e.printStackTrace();
+            }
         }
-        initChooseDriver();
-        initReporting();
-        initLogging();
+
+        // Validate critical config keys
+        validateConfig();
+
         System.out.println("=== Framework Initialization Complete ===");
-        // Initialize logging or reporting if needed
-        // ReportManager.initReports();
-
-        // You can initialize other utilities here
-        // ExcelReader.init();
-        // DBConnection.init();
     }
 
-    public static void initChooseDriver() {
-        String browser = properties.getProperty("browser").toLowerCase();
-        WebDriver driver = switch (browser) {
-            case "chrome" -> {
-                System.out.println("Intializing the Chrome");
-                WebDriverManager.chromedriver().setup();
-                yield new ChromeDriver();
-            }
-            case "firefox" -> {
-                WebDriverManager.firefoxdriver().setup();
-                yield new FirefoxDriver();
-            }
-            default -> throw new RuntimeException("Unsupported browser: " + browser);
-        };
-        DriverManager.setWebDriver(driver);
-        System.out.println(browser + " driver initialized");
-    }
-
-    private static void initReporting() {
-        System.out.println("Reporting Initialized (placeholder)");
-    }
-
-    private static void initLogging() {
-        System.out.println("Logging Initialized (placeholder)");
+    private static void validateConfig() {
+        ConfigPropertiesValidator.validateRequiredKeys(
+                List.of(
+                        "env",
+                        "browser",
+                        "implicitWait",
+                        "pageLoadTimeout",
+                        "api.baseUrl." + RunnerMapReader.getEnv(),
+                        "ui.baseUrl." + RunnerMapReader.getEnv()
+                )
+        );
+        System.out.println("Configuration validation successful");
     }
 }

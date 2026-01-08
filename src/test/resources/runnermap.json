@@ -1,0 +1,11 @@
+{
+  "env": "qa",
+  "modules": {
+    "api": true,
+    "ui": true,
+    "mobile": false,
+    "etl": false,
+    "reporting": false,
+    "logging": false
+  }
+}

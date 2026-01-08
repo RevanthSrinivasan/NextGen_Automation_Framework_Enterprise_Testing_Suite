@@ -1,0 +1,10 @@
+{
+  "assets": {
+    "ui": { "class": "core.DriverManager", "initMethod": "init" },
+    "api": { "class": "core.ApiConfig", "initMethod": "init" },
+    "mobile": { "class": "core.MobileDriverManager", "initMethod": "init" },
+    "etl": { "class": "core.ETLManager", "initMethod": "init" },
+    "reporting": { "class": "core.Reporting", "initMethod": "init" },
+    "logging": { "class": "core.Logging", "initMethod": "init" }
+  }
+}

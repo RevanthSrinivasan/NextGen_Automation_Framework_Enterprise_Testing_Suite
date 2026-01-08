@@ -5,21 +5,42 @@ package core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ScenarioVariables {
-    private Map<String, Object> variables = new HashMap<>();
-    public void set(String key,Object value)
-    {
-        variables.put(key,value);
+
+
+    private static final Map<String, Object> variables = new HashMap<>();
+
+    // Set a value
+    public void set(String key, Object value) {
+        variables.put(key, value);
     }
-    public Object get(String key)
-    {
-        return variables.get(key);
+
+    // Get a value with type-safety
+    public <T> T get(String key, Class<T> clazz) {
+        Object value = variables.get(key);
+        if (value == null) return null;
+        if (!clazz.isInstance(value)) {
+            throw new RuntimeException("Type mismatch for key: " + key + ". Expected: "
+                    + clazz.getName() + ", found: " + value.getClass().getName());
+        }
+        return clazz.cast(value);
     }
-    public boolean contains(String key)
-    {
+
+    // Check if key exists
+    public boolean contains(String key) {
         return variables.containsKey(key);
     }
 
+    // Remove a key if needed
+    public void remove(String key) {
+        variables.remove(key);
+    }
+
+    // Clear all scenario variables
+    public void clear() {
+        variables.clear();
+    }
 }
+
+
